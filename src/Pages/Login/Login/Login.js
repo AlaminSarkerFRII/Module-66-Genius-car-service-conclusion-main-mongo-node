@@ -4,11 +4,11 @@ import {
   useSendPasswordResetEmail,
   useSignInWithEmailAndPassword,
 } from "react-firebase-hooks/auth";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import auth from "../../../firebase.init";
 import Loading from "../../Shared/Loading/Loading";
 import SocialLogin from "../SocialLogin/SocialLogin";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PageTitle from "../../Shared/PageTitle/PageTitle";
 
@@ -17,6 +17,10 @@ const Login = () => {
   const emailRef = useRef(""); // string value empty thakbe
   const passwordRef = useRef("");
   const navigate = useNavigate();
+
+  const location = useLocation();
+
+  let from = location.state?.from?.pathname || "/";
 
   // jodi user registered hy then sign in/ login korbe
 
@@ -42,7 +46,7 @@ const Login = () => {
 
   // if user created
   if (user) {
-    navigate("/home");
+    navigate(from, { replace: true });
   }
 
   // handle submit
@@ -120,7 +124,6 @@ const Login = () => {
         </button>
       </p>
       <SocialLogin></SocialLogin>
-      <ToastContainer />
     </div>
   );
 };
